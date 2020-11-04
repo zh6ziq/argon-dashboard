@@ -57,16 +57,16 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="forms.html">
-                <i class="ni ni-calendar-grid-58 text-danger"></i>
-                <span class="nav-link-text">Book Appointment</span>
+              <a class="nav-link active bg-info" href="tables.html">
+                <i class="ni ni-calendar-grid-58 text-secondary"></i>
+                <span class="nav-link-text text-dark">Book Appointment</span>
               </a>
             </li>
             
             <li class="nav-item">
-              <a class="nav-link active bg-info" href="tables.html">
-                <i class="ni ni-bullet-list-67 text-primary"></i>
-                <span class="nav-link-text text-dark">Appointment Details</span>
+              <a class="nav-link" href="tables.html">
+                <i class="ni ni-bullet-list-67 text-info"></i>
+                <span class="nav-link-text">Appointment Details</span>
               </a>
             </li>
           
@@ -151,13 +151,10 @@
         <div class="header-body">
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
-              <h6 class="h2 text-white d-inline-block mb-0">List of Appointments</h6>
-             
+              <h6 class="h2 text-white d-inline-block mb-0">Book an Appointment</h6>
+            
             </div>
-            <!-- <div class="col-lg-6 col-5 text-right">
-              <a href="#" class="btn btn-sm btn-neutral">New</a>
-              <a href="#" class="btn btn-sm btn-neutral">Filters</a>
-            </div> -->
+           
           </div>
         </div>
       </div>
@@ -519,34 +516,41 @@
             <div class="card-header bg-transparent border-0">
               <h3 class="text-white mb-0">Dark table</h3>
             </div>
-            <div class="table-responsive">
-              <table class="table align-items-center table-dark table-flush">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col" class="sort" data-sort="services">Services</th>
-                    <th scope="col" class="sort" data-sort="date">Date</th>
-                    <th scope="col" class="sort" data-sort="time">Time</th>
-                    <th scope="col" class="sort" data-sort="status">Status</th>
-                    
-                  </tr>
-                </thead>
-                <tbody class="list">
+            <div class="col-sm-6 col-md-5">
+              <form class="p-3 m-2">
+                <div class="form-group">
+                  <label for="example-text-input" class="form-control-label">Name</label>
+                  <input class="form-control" type="text" id="example-text-input">
+                </div>
+ 
+                <div class="form-group">
+                  <label for="example-tel-input" class="form-control-label">Phone</label>
+                  <input class="form-control" type="tel" id="example-tel-input">
+                </div>
+                
+                <div class="form-group">
+                  <label for="services">Services</label>
+                  <select class="form-control" id="services">
+                    <option selected disabled>--Select--</option>
+                    <option>Dental</option>
+                    <option>Therapy</option>
+                    <option>Skin</option>
+                  </select>
+                </div>
+               
+                <div class="form-group">
+                  <label for="example-date-input" class="form-control-label">Date</label>
+                  <input class="form-control" type="date" id="example-date-input">
+                </div>
+               
+                <div class="form-group">
+                  <label for="example-time-input" class="form-control-label">Time</label>
+                  <input class="form-control" type="time" id="example-time-input">
+                </div>
+              
+                <button type="submit" class="btn btn-success mb-1">Submit</button>
+              </form>
 
-                  <tr>
-                    <th scope="row">
-                      <div class="media align-items-center">
-                        <a href="#" class="avatar rounded-circle mr-3">
-                          <img alt="Image placeholder" src="../assets/img/theme/angular.jpg">
-                        </a>
-                        <div class="media-body">
-                          <span class="name mb-0 text-sm">Angular Now UI Kit PRO</span>
-                        </div>
-                      </div>
-                    </th>
-                   
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
