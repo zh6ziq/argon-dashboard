@@ -13,6 +13,20 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+<?php
+session_start();
+$con = mysqli_connect("localhost", "root", "", "bookingappointment") or die ('Unable to connect to MYSQL: ' . mysqli_connect_error());
+$stfID = $_SESSION['staffID'];
+$stfRL = 'Admin';
+$query = "SELECT * FROM staff WHERE staffID='$stfID' AND staffRole='$stfRL'";
+$result = mysqli_query($con, $query) or die ('Failed to query ' . mysqli_error($con));
+  if(!isset($_SESSION['staffID'])) {
+    header("Location: login.php");
+  }
+  while($row = mysqli_fetch_assoc($result))
+  { $staffName = $row['staffName']; }
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -51,59 +65,39 @@
           <ul class="navbar-nav">
 
             <li class="nav-item">
-              <a class="nav-link active bg-info" href="dashboardAdmin.html">
+              <a class="nav-link active bg-info" href="dashboardAdmin.php">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text text-dark">Dashboard</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="listApp.html">
+              <a class="nav-link" href="listApp.php">
                 <i class="ni ni-calendar-grid-58 text-danger"></i>
                 <span class="nav-link-text">List of Appointments</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="listPatient.html">
+              <a class="nav-link" href="listPatient.php">
                 <i class="ni ni-bullet-list-67 text-info"></i>
                 <span class="nav-link-text">List of Patients</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="listStaff.html">
+              <a class="nav-link" href="listStaff.php">
                 <i class="ni ni-bullet-list-67 text-info"></i>
                 <span class="nav-link-text">List of Staffs</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="profileAdmin.html">
+              <a class="nav-link" href="profileAdmin.php">
                 <i class="ni ni-single-02 text-yellow"></i>
                 <span class="nav-link-text">Profile</span>
               </a>
             </li>
-
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="login.html">
-                <i class="ni ni-key-25 text-info"></i>
-                <span class="nav-link-text">Login</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="register.html">
-                <i class="ni ni-circle-08 text-pink"></i>
-                <span class="nav-link-text">Register</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="upgrade.html">
-                <i class="ni ni-send text-dark"></i>
-                <span class="nav-link-text">Upgrade</span>
-              </a>
-            </li> -->
-
           </ul>
           <!-- Divider -->
           <hr class="my-3">
@@ -116,7 +110,7 @@
   <!-- Main content -->
   <div class="main-content" id="panel">
     <!-- Topnav -->
-    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+    <nav class="navbar navbar-top navbar-expand navbar-dark bg-gradient-info border-bottom">
       <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Search form -->
@@ -159,32 +153,12 @@
                     <img alt="Image placeholder" src="../assets/img/theme/team-4.jpg">
                   </span>
                   <div class="media-body  ml-2  d-none d-lg-block">
-                    <span class="mb-0 text-sm  font-weight-bold">User</span>
+                    <span class="mb-0 text-sm  font-weight-bold"><?php echo $staffName ?></span>
                   </div>
                 </div>
               </a>
               <div class="dropdown-menu  dropdown-menu-right ">
-                <!-- <div class="dropdown-header noti-title">
-                  <h6 class="text-overflow m-0">Welcome!</h6>
-                </div>
-                <a href="#!" class="dropdown-item">
-                  <i class="ni ni-single-02"></i>
-                  <span>My profile</span>
-                </a>
-                <a href="#!" class="dropdown-item">
-                  <i class="ni ni-settings-gear-65"></i>
-                  <span>Settings</span>
-                </a>
-                <a href="#!" class="dropdown-item">
-                  <i class="ni ni-calendar-grid-58"></i>
-                  <span>Activity</span>
-                </a>
-                <a href="#!" class="dropdown-item">
-                  <i class="ni ni-support-16"></i>
-                  <span>Support</span>
-                </a>
-                <div class="dropdown-divider"></div> -->
-                <a href="#!" class="dropdown-item">
+                <a href="_logout.php" class="dropdown-item">
                   <i class="ni ni-user-run text-danger"></i>
                   <span class="text-danger">Logout</span>
                 </a>
@@ -196,120 +170,27 @@
     </nav>
 
     <!-- Header -->
-    <!-- Header -->
-    <!--<div class="header bg-primary pb-6">
+    <div class="header bg-gradient-info pb-6">
       <div class="container-fluid">
         <div class="header-body">
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
-              <h6 class="h2 text-white d-inline-block mb-0">Welcome to Dashboard</h6>
-
+              <h6 class="h2 text-white d-inline-block mb-0">Dashboard Admin</h6>
             </div>
-
-          </div>-->
-
-          <!-- Card stats -->
-          <div class="row">
-
-            <div class="col-xl-3 col-md-6">
-              <div class="card card-stats">
-                <!-- Card body -->
-                <!-- <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Total traffic</h5>
-                      <span class="h2 font-weight-bold mb-0">350,897</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
-                        <i class="ni ni-active-40"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                  </p>
-                </div> -->
-              </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-              <div class="card card-stats">
-                <!-- Card body -->
-                <!-- <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
-                      <span class="h2 font-weight-bold mb-0">2,356</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                        <i class="ni ni-chart-pie-35"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                  </p>
-                </div> -->
-              </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-              <div class="card card-stats">
-                <!-- Card body -->
-                <!-- <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                      <span class="h2 font-weight-bold mb-0">924</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
-                        <i class="ni ni-money-coins"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                  </p>
-                </div> -->
-              </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-              <div class="card card-stats">
-                <!-- Card body -->
-                <!-- <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                      <span class="h2 font-weight-bold mb-0">49,65%</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
-                        <i class="ni ni-chart-bar-32"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="mt-3 mb-0 text-sm">
-                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                    <span class="text-nowrap">Since last month</span>
-                  </p>
-                </div> -->
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
     </div>
+    <!-- Page con
+    
 
     <!-- Page content -->
     <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col">
+          <div class="card"></div>
+        </div>
+      </div>
       <div class="row">
         <div class="col">
           <div class="card bg-default shadow">
@@ -323,7 +204,26 @@
             </div>
 
             <div class="card-body text-white">
-              hellooooo
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <ul>
+                      <li>
+                        <h3 class="text-white pl-2">CRUD Appointment</h3>
+                      </li>
+                      <li>
+                        <h3 class="text-white pl-2">CRUD Patient</h3>
+                      </li>
+                      <li>
+                        <h3 class="text-white pl-2">CRUD Staff</h3>
+                      </li>
+                      <li>
+                        <h3 class="text-white pl-2">CRUD Profile</h3>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -331,7 +231,7 @@
 
       <!-- Footer -->
       <footer class="footer pt-0">
-        <div class="row align-items-center justify-content-lg-between">
+        <!-- <div class="row align-items-center justify-content-lg-between">
           <div class="col-lg-6">
             <div class="copyright text-center  text-lg-left  text-muted">
               &copy; 2020 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
@@ -353,7 +253,7 @@
               </li>
             </ul>
           </div>
-        </div>
+        </div> -->
       </footer>
     </div>
   </div>

@@ -13,6 +13,19 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+<?php
+session_start();
+$con = mysqli_connect("localhost", "root", "", "bookingappointment") or die ('Unable to connect to MYSQL: ' . mysqli_connect_error());
+$xyz = $_SESSION['patientIC'];
+$query = "SELECT * FROM patient where patientIC='$xyz'";
+$result = mysqli_query($con, $query) or die ('Failed to query ' . mysqli_error($con));
+  if(!isset($_SESSION['patientIC'])) {
+    header("Location: login.php");
+  }
+  while($row = mysqli_fetch_assoc($result))
+  { $patientName = $row['patientName']; }
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -50,28 +63,28 @@
           <ul class="navbar-nav">
 
             <li class="nav-item">
-              <a class="nav-link" href="dashboardPatient.html">
+              <a class="nav-link active bg-info" href="dashboardPatient.php">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text text-dark">Dashboard</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="bookApp.html">
+              <a class="nav-link" href="bookApp.php">
                 <i class="ni ni-calendar-grid-58 text-danger"></i>
                 <span class="nav-link-text">Book Appointment</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="historyApp.html">
+              <a class="nav-link" href="historyApp.php">
                 <i class="ni ni-bullet-list-67 text-info"></i>
                 <span class="nav-link-text">Appointment Details</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link active bg-info" href="profilePatient.html">
+              <a class="nav-link" href="profilePatient.php">
                 <i class="ni ni-single-02 text-yellow"></i>
                 <span class="nav-link-text">Profile</span>
               </a>
@@ -89,7 +102,7 @@
   <!-- Main content -->
   <div class="main-content" id="panel">
     <!-- Topnav -->
-    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+    <nav class="navbar navbar-top navbar-expand navbar-dark bg-gradient-info border-bottom">
       <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -116,13 +129,13 @@
                     <img alt="Image placeholder" src="../assets/img/theme/team-4.jpg">
                   </span>
                   <div class="media-body  ml-2  d-none d-lg-block">
-                    <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
+                    <span class="mb-0 text-sm  font-weight-bold"><?php echo $patientName ?></span>
                   </div>
                 </div>
               </a>
               <div class="dropdown-menu  dropdown-menu-right ">
 
-                <a href="#!" class="dropdown-item">
+                <a href="_logout.php" class="dropdown-item">
                   <i class="ni ni-user-run text-danger"></i>
                   <span class="text-danger">Logout</span>
                 </a>
@@ -134,6 +147,19 @@
       </div>
     </nav>
 
+    <!-- Header -->
+    <div class="header bg-gradient-info pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Page content -->
     <div class="container-fluid mt--6">
       <div class="row">
@@ -144,80 +170,39 @@
         </div>
       </div>
 
-      <!-- Display Profile -->
+      <!-- Dark table -->
       <div class="row">
         <div class="col">
           <div class="card bg-default shadow">
             <div class="card-header bg-transparent border-0">
-              <h3 class="text-white mb-0">Profile</h3>
+              <h3 class="text-white mb-0">User Guides</h3>
             </div>
-            
-            <div class="card-body">
-            <tr>
-              <td>hello</td>
-            </tr>
+            <div class="card-body text-white">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <ul>
+                      <li>
+                        <h3 class="text-white pl-2">Book Appointment</h3>
+                      </li>
+                      <li>
+                        <h3 class="text-white pl-2">Check Appointment Details</h3>
+                      </li>
+                      <li>
+                        <h3 class="text-white pl-2">Update Profile</h3>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-            
           </div>
-          
         </div>
       </div>
 
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Edit Profile
-      </button>
-
-       <!-- Modal -->
-       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-
-            <!-- Edit Profile Form -->
-            <div class="modal-body">
-              <form>
-
-                <div class="form-group">
-                  <label for="name">Name</label>
-                  <input type="text" class="form-control" id="name">
-                </div>
-
-                <div class="form-group">
-                  <label for="idNumber">IC Number</label>
-                  <input type="text" class="form-control" id="idNumber" disabled>
-                </div>
-
-                <div class="form-group">
-                  <label for="email">Email address</label>
-                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-                </div>
-
-                <div class="form-group">
-                  <label for="contact">Contact No</label>
-                  <input type="tel" class="form-control" id="contact">
-                </div>
-
-
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-
-
-
-
       <!-- Footer -->
-
       <footer class="footer pt-0">
-        <div class="row align-items-center justify-content-lg-between">
+        <!-- <div class="row align-items-center justify-content-lg-between">
           <div class="col-lg-6">
             <div class="copyright text-center  text-lg-left  text-muted">
               &copy; 2020 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
@@ -239,7 +224,7 @@
               </li>
             </ul>
           </div>
-        </div>
+        </div> -->
       </footer>
     </div>
   </div>
@@ -255,4 +240,3 @@
 </body>
 
 </html>
-

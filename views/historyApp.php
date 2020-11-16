@@ -13,6 +13,19 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+<?php
+session_start();
+$con = mysqli_connect("localhost", "root", "", "bookingappointment") or die ('Unable to connect to MYSQL: ' . mysqli_connect_error());
+$xyz = $_SESSION['patientIC'];
+$query = "SELECT * FROM patient where patientIC='$xyz'";
+$result = mysqli_query($con, $query) or die ('Failed to query ' . mysqli_error($con));
+  if(!isset($_SESSION['patientIC'])) {
+    header("Location: login.php");
+  }
+  while($row = mysqli_fetch_assoc($result))
+  { $patientName = $row['patientName']; }
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -50,28 +63,28 @@
           <ul class="navbar-nav">
 
             <li class="nav-item">
-              <a class="nav-link" href="dashboardPatient.html">
+              <a class="nav-link" href="dashboardPatient.php">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text text-dark">Dashboard</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link active bg-info" href="bookApp.html">
+              <a class="nav-link" href="bookApp.php">
                 <i class="ni ni-calendar-grid-58 text-danger"></i>
                 <span class="nav-link-text">Book Appointment</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="historyApp.html">
-                <i class="ni ni-bullet-list-67 text-info"></i>
+              <a class="nav-link active bg-info" href="historyApp.php">
+                <i class="ni ni-bullet-list-67 text-default"></i>
                 <span class="nav-link-text">Appointment Details</span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="profilePatient.html">
+              <a class="nav-link" href="profilePatient.php">
                 <i class="ni ni-single-02 text-yellow"></i>
                 <span class="nav-link-text">Profile</span>
               </a>
@@ -89,7 +102,7 @@
   <!-- Main content -->
   <div class="main-content" id="panel">
     <!-- Topnav -->
-    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+    <nav class="navbar navbar-top navbar-expand navbar-dark bg-gradient-info border-bottom">
       <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -116,13 +129,13 @@
                     <img alt="Image placeholder" src="../assets/img/theme/team-4.jpg">
                   </span>
                   <div class="media-body  ml-2  d-none d-lg-block">
-                    <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
+                    <span class="mb-0 text-sm  font-weight-bold"><?php echo $patientName; ?></span>
                   </div>
                 </div>
               </a>
               <div class="dropdown-menu  dropdown-menu-right ">
 
-                <a href="#!" class="dropdown-item">
+                <a href="_logout.php" class="dropdown-item">
                   <i class="ni ni-user-run text-danger"></i>
                   <span class="text-danger">Logout</span>
                 </a>
@@ -134,6 +147,21 @@
       </div>
     </nav>
 
+    <!-- Header -->
+    <div class="header bg-gradient-info pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">Appointment Details</h6>
+    
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Page content -->
     <div class="container-fluid mt--6">
       <div class="row">
@@ -143,28 +171,58 @@
           </div>
         </div>
       </div>
+      
+
+      <?php
+    $con = mysqli_connect("localhost", "root", "", "bookingappointment") or die ('Unable to connect to MYSQL: ' . mysqli_connect_error());
+    $pIC = $_SESSION['patientIC'];
+    $query = "SELECT a.*,p.* FROM appointment a, patient p WHERE a.patientIC = '".$pIC."' AND p.patientIC='".$pIC."' ORDER BY appDate";
+    $result = mysqli_query($con, $query) or die ('Failed to query ' . mysqli_error($con));
+    ?>
+
 
       <!-- Dark table -->
-      <div class="row">
-        <div class="col">
-          <div class="card bg-default shadow">
-            <div class="card-header bg-transparent border-0">
-              <h3 class="text-white mb-0">Book an Appointment</h3>
-            </div>
-            <div class="col-sm-6 col-md-5">
-              <form class="p-3 m-2"></form>
-                
-            </div>
-          </div>
-        </div>
-      </div>
-
+        <div class="row">
+           <div class="col">
+              <div class="card bg-default shadow">
+                <div class="card-header bg-transparent border-0">
+                    <h3 class="text-white mb-0">History</h3></div>
+                      <div class="table-responsive">
+                      <table class="table align-items-center table-dark table-flush">
+                        
+                        <thead class="bg-gradient-success">
+                          <tr>
+                            <th>Services</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <?php
+                        while($row=mysqli_fetch_assoc($result))
+                        {
+                        ?>
+                        <tbody class="list">
+                          <tr>
+                            <td><?php echo $row['appService']; ?></td>
+                            <td><?php echo $row['appDate']; ?></td>
+                            <td><?php echo $row['appTime']; ?></td>
+                            <td><?php echo $row['appStatus']; ?></td>
+                          </tr>
+                        </tbody>
+                        <?php } ?>
+                      </table>
+               </div>
+              </div>
+           </div>
+         </div>
+   
 
 
       <!-- Footer -->
 
       <footer class="footer pt-0">
-        <div class="row align-items-center justify-content-lg-between">
+        <!-- <div class="row align-items-center justify-content-lg-between">
           <div class="col-lg-6">
             <div class="copyright text-center  text-lg-left  text-muted">
               &copy; 2020 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
@@ -186,7 +244,7 @@
               </li>
             </ul>
           </div>
-        </div>
+        </div> -->
       </footer>
     </div>
   </div>
@@ -200,5 +258,4 @@
   <!-- Argon JS -->
   <script src="../assets/js/argon.js?v=1.2.0"></script>
 </body>
-
 </html>
